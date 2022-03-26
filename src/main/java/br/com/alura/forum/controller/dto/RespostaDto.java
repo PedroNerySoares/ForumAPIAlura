@@ -2,7 +2,7 @@ package br.com.alura.forum.controller.dto;
 
 import java.time.LocalDateTime;
 
-import br.com.alura.forum.modelo.Resposta;
+import br.com.alura.forum.models.Resposta;
 
 public class RespostaDto {
 	private Long id;

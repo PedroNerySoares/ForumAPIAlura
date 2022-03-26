@@ -27,8 +27,8 @@ import br.com.alura.forum.controller.dto.DetalheTopicoDto;
 import br.com.alura.forum.controller.dto.TopicoDto;
 import br.com.alura.forum.controller.form.AtualizacaoTopicoForm;
 import br.com.alura.forum.controller.form.TopicoForm;
-import br.com.alura.forum.modelo.Curso;
-import br.com.alura.forum.modelo.Topico;
+import br.com.alura.forum.models.Curso;
+import br.com.alura.forum.models.Topico;
 import br.com.alura.forum.repositories.CursoRepository;
 import br.com.alura.forum.repositories.TopicoRepository;
 
@@ -86,16 +86,25 @@ public class TopicosController {
 	@Transactional
 	public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id,@RequestBody  @Valid AtualizacaoTopicoForm form) {
 		
-		Topico topico = form.atualizar(id,topicoRepository);
-		return ResponseEntity.ok(new TopicoDto(topico));
+		//Topico topico = form.atualizar(id,topicoRepository);
+		Optional<Topico> topico = topicoRepository.findById(id);
+		if(topico.isPresent()) {
+			return ResponseEntity.ok(new TopicoDto(topico.get()));
+		}
+			return ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity remover(@PathVariable Long id){
 		
-		topicoRepository.deleteById(id);
-		return ResponseEntity.ok(null);
+		//topicoRepository.deleteById(id);
+		Optional<Topico> topico = topicoRepository.findById(id);
+		if(topico.isPresent()) {
+			topicoRepository.deleteById(id);
+			return ResponseEntity.ok(null);
+		}
+		return ResponseEntity.notFound().build();
 	}
 
 }
